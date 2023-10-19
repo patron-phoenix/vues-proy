@@ -2,10 +2,10 @@
     <div class="container">
         <h1 class="mb-4">Editar Área</h1>
 
-        <form >
+        <form @submit.prevent="update()">
             <div class="mb-3">
                 <label for="departamento" class="form-label">Departamento/Área</label>
-                <input type="text" class="form-control" id="departamento" v-model="payload.departamento" >
+                <input type="text" class="form-control" id="departamento" v-model="payload.departamento">
             </div>
             <div class="mb-3">
                 <label for="encargado" class="form-label">Encargado</label>
@@ -39,25 +39,37 @@ export default {
         }
     },
     methods: {
-        getList() {
-            this.axios({
-                method: 'get',
-                url: this.api + '/areas'
-            }).then((response) => {
-                this.payload=response.data
-            }).catch((error) => {
-                console.log(error);
-            })
-        },
         getOne() {
             this.axios({
                 method: 'get',
-                url: this.api + '/areasUpdate/'+this.$route.params.id
+                url: this.api + '/areas/' + this.$route.params.id
             }).then((response) => {
                 this.payload = response.data;
             }).catch((error) => {
                 console.log(error);
             })
+        },
+        update() {
+            if (confirm('deseas guardar los cambios realizados?')) {
+                this.axios({
+                    method: 'patch',
+                    url: this.api + '/areas/' + this.$route.params.id,
+                    data: this.payload
+                }).then((response) => {
+                    console.log(response);
+                }).catch((error) => {
+                    console.log(error);
+                })
+                this.limpiar()
+            }
+        },
+        limpiar() {
+
+            this.payload.departamento = "",
+            this.payload.encargado = "",
+            this.payload.funcionario = "",
+            this.$router.push('/areas')
+
         }
     },
     mounted() {

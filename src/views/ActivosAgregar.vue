@@ -2,34 +2,34 @@
     <div class="container">
         <h1 class="mb-4">Registro de Activo</h1>
 
-        <form>
+        <form @submit.prevent="nuevo()">
             <div class="mb-3">
                 <label for="marca" class="form-label">Marca</label>
-                <input type="text" class="form-control" id="marca" required>
+                <input type="text" class="form-control" id="marca" required v-model="payload.marca">
             </div>
             <div class="mb-3">
                 <label for="modelo" class="form-label">Modelo</label>
-                <input type="text" class="form-control" id="modelo" required>
+                <input type="text" class="form-control" id="modelo" required v-model="payload.modelo">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Estado</label>
-                <select class="form-select " aria-label="Default select example">
-                <option selected>-- Seleccione --</option>
-                <option value="1">Nuevo</option>
-                <option value="2">Usado</option>
-                <option value="3">En Desuso</option>
-            </select>
+                <select class="form-select " aria-label="Default select example" required v-model="payload.estado">
+                    <option selected disabled>-- Seleccione -- </option>
+                    <option value="Nuevo">Nuevo</option>
+                    <option value="Usado">Usado</option>
+                    <option value="En Desuso">En Desuso</option>
+                </select>
             </div>
 
             <div class="mb-3">
-                <label for="area" class="form-label">Área</label>
-                <input type="number" class="form-control" id="area" required>
+                <label class="form-label">Área Id</label>
+                <select class="form-select " aria-label="Default select example" v-model="payload.areaId">
+                    <option selected  disabled>-- Seleccione --</option>
+                    <option :value="area.id" v-for="area in areas" :key="area.id">{{area.departamento}}</option>
+
+                </select>
             </div>
-            <!-- <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div> -->
 
             <button type="submit" class="btn btn-outline-success boton">Agregar</button>
             <router-link class="btn btn-outline-danger boton" to="/activos">Cancelar</router-link>
@@ -40,7 +40,56 @@
 
 <script>
 export default {
+    name: 'ActivosAgregar',
+    data() {
+        const api = process.env.VUE_APP_API
+        return {
+            api,
+            items: [],
+            areas:[],
+            payload: {
+                marca: null,
+                modelo: null,
+                estado: null,
+                areaId: null
+            }
+        }
+    },
+    methods: {
+        nuevo() {
+            this.axios({
+                method: 'post',
+                url: this.api + '/activos',
+                data: this.payload
+            }).then((response) => {
+                // this.getList();
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
+            this.limpiar()
+        },
+        getListAreas() {
+            this.axios({
+                method: 'get',
+                url: this.api + '/areas'
+            }).then((response) => {
+                this.areas = response.data;
+            }).catch((error) => {
+                console.log(error);
+            })
+        },
+        limpiar() {
 
+            this.payload.marca = "",
+                this.payload.modelo = "",
+                this.$router.push('/activos')
+
+        }
+    },
+    mounted(){
+        this.getListAreas()
+    }
 }
 </script>
 

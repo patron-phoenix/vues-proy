@@ -9,14 +9,20 @@
     {
       "departamento": "cocina",
       "encargado": "rudy",
-      "funcionario": 2,
+      "funcionario": 4,
       "id": 3
     },
     {
-      "departamento": "finanzas",
+      "departamento": "sistemas",
       "encargado": "emanuel",
-      "funcionario": 6,
+      "funcionario": 3,
       "id": 4
+    },
+    {
+      "departamento": "recursos humanos",
+      "encargado": "pepe",
+      "funcionario": 4,
+      "id": 5
     }
   ],
   "activos": [
@@ -25,7 +31,28 @@
       "marca": "hp",
       "modelo": "pavilion 360",
       "estado": "Nuevo",
-      "areaId": 1
+      "areaId": 4
+    },
+    {
+      "marca": "asus",
+      "modelo": "ku-5854",
+      "estado": "Usado",
+      "areaId": 4,
+      "id": 2
+    },
+    {
+      "marca": "asus",
+      "modelo": "47-ds",
+      "estado": "En Desuso",
+      "areaId": 5,
+      "id": 3
+    },
+    {
+      "marca": "panda",
+      "modelo": "ultra",
+      "estado": "Usado",
+      "areaId": 1,
+      "id": 4
     }
   ]
 }

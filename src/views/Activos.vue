@@ -6,22 +6,20 @@
       <router-link class="btn btn-outline-success mb-4" to="/activosAgregar">Agregar</router-link>
       <!-- <button class="btn btn-outline-success mb-4">Agregar</button> -->
 
-      <div class="dropdown mb-4">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Filtrar
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
+      <div class="mb-3">
+        <select class="form-select " aria-label="Default select example" @change="filter('estado', $event.target.value)">
+          <option value="" selected>todos</option>
+          <option value="Nuevo">Nuevo</option>
+          <option value="Usado">Usado</option>
+          <option value="En Desuso">En Desuso</option>
+        </select>
       </div>
 
     </div>
 
-    <form class="d-flex mb-4" role="search">
-      <input class="form-control me-2 buscar" type="search" placeholder="Buscar..." aria-label="Search">
-      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    <form class="d-flex mb-4" role="search" @submit.prevent="getList()">
+      <input class="form-control me-2 buscar" type="search" placeholder="Buscar..." aria-label="Search" v-model="search"
+        @search="getList()">
     </form>
 
     <table class="table ">
@@ -37,17 +35,18 @@
       </thead>
 
       <tbody>
-        <tr>
-          <th>1</th>
-          <td>hp</td>
-          <td>hp</td>
-          <td>nuevo</td>
-          <td>1</td>
+        <tr v-for="item in items" :key="item.id">
+          <th>{{ item.id }}</th>
+          <td>{{ item.marca }}</td>
+          <td>{{ item.modelo }}</td>
+          <td>{{ item.estado }}</td>
+          <td>{{ item.areaId }}</td>
           <td>
             <div class="acciones">
-              <router-link class="btn btn-outline-info  boton" to="/activosUpdate">Editar</router-link>
+              <!-- <router-link class="btn btn-outline-info  boton" to="/activosUpdate">Editar</router-link> -->
               <!-- <a class="btn btn-outline-info boton ">Editar</a> -->
-              <a class="btn btn-outline-danger boton ">Eliminar</a>
+              <a class="btn btn-outline-info boton " @click="update(item.id)">Editar</a>
+              <a class="btn btn-outline-danger boton " @click="eliminar(item.id)">Eliminar</a>
               <!-- <a class="btn btn-outline-danger boton " ">Eliminar</a> -->
             </div>
           </td>
@@ -61,25 +60,71 @@
 
 <script>
 export default {
+  name: 'ActivosView',
+  data() {
+    const api = process.env.VUE_APP_API
+    return {
+      api,
+      items: [],
+      search: '',
+      toFilter: '',
+      areas: [],
+    }
+  },
+  methods: {
+    filter(name, value) {
+      this.toFilter = value === '' ? '' : '&' + name + '=' + value;
+      this.getList();
+    },
+    getList(name, value) {
+      this.axios({
+        method: 'get',
+        url: this.api + '/activos?q=' + this.search + this.toFilter
+      }).then((response) => {
+        this.items = response.data;
+      }).catch((error) => {
+        console.log(error);
+      })
+    },
+    eliminar(id) {
+      if (confirm('Realmente deseas eliminar el registro')) {
+        this.axios({
+          method: 'delete',
+          url: this.api + '/activos/' + id
+        }).then((response) => {
+          this.getList();
+        }).catch((error) => {
+          console.log(error);
+        })
+      }
+    },
+    update(id) {
+      this.$router.push('/activos/' + id)
+    }
+  },
+  mounted() {
+    this.getList();
+    this.filter();
 
+  }
 }
 </script>
 
 <style>
 .buscar-filtrar {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .buscar {
-    width: 400px;
+  width: 400px;
 }
 
 .acciones a {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 .boton {
-    width: 90px;
+  width: 90px;
 }
 </style>

@@ -43,27 +43,27 @@ export default {
         }
     },
     methods: {
-        // getList() {
-        //     this.axios({
-        //         method: 'get',
-        //         url: this.api + '/areas'
-        //     }).then((response) => {
-        //         this.items = response.data;
-        //     }).catch((error) => {
-        //         console.log(error);
-        //     })
-        // },
+
         nuevo() {
             this.axios({
                 method: 'post',
                 url: this.api + '/areas',
-                data:this.payload
+                data: this.payload
             }).then((response) => {
                 // this.getList();
                 console.log(response);
             }).catch((error) => {
                 console.log(error);
             })
+            this.limpiar()
+        },
+        limpiar() {
+
+            this.payload.departamento = "",
+                this.payload.encargado = "",
+                this.payload.funcionario = "",
+                this.$router.push('/areas')
+
         }
     },
     mounted() {

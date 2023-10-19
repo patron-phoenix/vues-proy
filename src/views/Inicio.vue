@@ -3,6 +3,7 @@
         <img src="../assets/logo.png" alt="logo">
         <h1 class="titulo">F<span>&</span>F</h1>
         <h2 class="bienvenido">Bienvenido al Sistema</h2>
+        <p class="desarrollado">Desarrollado por: <span>IVAN SUXO CHOQUE</span> </p>
     </div>
 </template>
 
@@ -39,5 +40,17 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.desarrollado{
+    font-size: 18px;
+    margin: 50px 0;
+    font-weight: 700;
+    background: #35495e;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: #fff;
+}
+.desarrollado span{
+    color: #50e09f;
 }
 </style>

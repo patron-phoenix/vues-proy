@@ -6,22 +6,10 @@
       <router-link class="btn btn-outline-success mb-4" to="/areasAgregar">Nuevo Registro</router-link>
       <!-- <button class="btn btn-outline-success mb-4">Agregar</button> -->
 
-      <div class="dropdown mb-4">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Filtrar
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div>
-
     </div>
 
-    <form class="d-flex mb-4" role="search">
-      <input class="form-control me-2 buscar" type="search" placeholder="Buscar..." aria-label="Search">
-      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    <form class="d-flex mb-4" role="search" @submit.prevent="getList()">
+      <input class="form-control me-2 buscar" type="search" placeholder="Buscar..." aria-label="Search" v-model="search" @search="getList()">
     </form>
 
     <table class="table ">
@@ -64,14 +52,21 @@ export default {
     const api = process.env.VUE_APP_API
     return {
       api,
-      items: []
+      items: [],
+      search:'',
+      tofilter:''
+      
     }
   },
   methods: {
+    filter(name, value) {
+      this.toFilter = value === '' ? '' : '&' + name + '=' + value;
+      this.getList();
+    },
     getList() {
       this.axios({
         method: 'get',
-        url: this.api + '/areas'
+        url: this.api + '/areas?q='+this.search+this.tofilter
       }).then((response) => {
         this.items = response.data;
       }).catch((error) => {
@@ -91,11 +86,12 @@ export default {
       }
     },
     update(id){
-      this.$router.push('/areasUpdate/'+id)
+      this.$router.push('/areas/'+id)
     }
   },
   mounted() {
     this.getList();
+    this.filter();
   }
 
 }

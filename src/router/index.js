@@ -18,7 +18,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AreasAgregar.vue')
   },
   {
-    path: '/areasUpdate/:id',
+    path: '/areas/:id',
     name: 'areasUpdate',
     component: () => import(/* webpackChunkName: "about" */ '../views/AreasUpdate.vue')
   },
@@ -33,7 +33,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/ActivosAgregar.vue')
   },
   {
-    path: '/activosUpdate',
+    path: '/activos/:id',
     name: 'activosUpdate',
     component: () => import(/* webpackChunkName: "about" */ '../views/ActivosUpdate.vue')
   }
