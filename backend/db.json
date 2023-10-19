@@ -1,0 +1,31 @@
+{
+  "areas": [
+    {
+      "id": 1,
+      "departamento": "Legal",
+      "encargado": "Jose",
+      "funcionario": 1
+    },
+    {
+      "departamento": "cocina",
+      "encargado": "rudy",
+      "funcionario": 2,
+      "id": 3
+    },
+    {
+      "departamento": "finanzas",
+      "encargado": "emanuel",
+      "funcionario": 6,
+      "id": 4
+    }
+  ],
+  "activos": [
+    {
+      "id": 1,
+      "marca": "hp",
+      "modelo": "pavilion 360",
+      "estado": "Nuevo",
+      "areaId": 1
+    }
+  ]
+}
